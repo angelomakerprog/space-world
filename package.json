@@ -1,0 +1,22 @@
+{
+  "name": "space-world",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "dev": "vite --host --port 5173",
+    "build": "vite build",
+    "preview": "vite preview --port 4173"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "three": "^0.185.1"
+  },
+  "devDependencies": {
+    "html2canvas": "^1.4.1",
+    "vite": "^8.2.2"
+  },
+  "private": true
+}

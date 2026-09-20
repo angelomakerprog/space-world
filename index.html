@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>SPACE WORLD — Solar System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <canvas id="stage"></canvas>
+
+  <div id="vignette"></div>
+
+  <!-- ══ TOP TIME SCALE ══ -->
+  <header id="timebar">
+    <div id="ruler">
+      <canvas id="ruler-canvas"></canvas>
+      <div id="playhead"><span id="playhead-label">—</span></div>
+    </div>
+    <div id="ruler-meta">
+      <span id="ruler-span">—</span>
+      <span class="dot">·</span>
+      <span id="ruler-rate">—</span>
+    </div>
+  </header>
+
+  <!-- ══ TOP LEFT — METRICS ══ -->
+  <aside id="hud-left">
+
+    <section class="panel" id="panel-epoch">
+      <h2>EPOCH</h2>
+      <div class="rows">
+        <div class="row"><span class="k">UTC</span><span class="v" id="m-utc">—</span></div>
+        <div class="row"><span class="k">JULIAN DAY</span><span class="v" id="m-jd">—</span></div>
+        <div class="row"><span class="k">MISSION T+</span><span class="v" id="m-elapsed">—</span></div>
+      </div>
+    </section>
+
+    <section class="panel" id="panel-flow">
+      <h2>TIME FLOW</h2>
+      <div class="rate-readout"><span id="m-rate">1.00</span><em id="m-rate-unit">day / sec</em></div>
+      <div class="scrub">
+        <input id="rate-slider" type="range" min="0" max="1000" value="500" step="1" aria-label="Simulation rate" />
+      </div>
+      <div class="btns">
+        <button data-act="slower" title="Slower (,)">&#9666;&#9666;</button>
+        <button data-act="play" id="btn-play" title="Pause / Play (space)">&#9646;&#9646;</button>
+        <button data-act="faster" title="Faster (.)">&#9656;&#9656;</button>
+        <button data-act="reverse" id="btn-rev" title="Reverse flow (R)">&#8646;</button>
+        <button data-act="now" title="Jump to real now (N)">NOW</button>
+      </div>
+      <div class="presets">
+        <button data-rate="0.000011574">1 s</button>
+        <button data-rate="0.000694">1 m</button>
+        <button data-rate="0.0416">1 h</button>
+        <button data-rate="1">1 d</button>
+        <button data-rate="30.44">1 mo</button>
+        <button data-rate="365.25">1 y</button>
+      </div>
+    </section>
+
+    <section class="panel" id="panel-obs">
+      <h2>OBSERVER</h2>
+      <div class="rows">
+        <div class="row"><span class="k">RANGE TO SOL</span><span class="v" id="m-range">—</span></div>
+        <div class="row"><span class="k">LIGHT DELAY</span><span class="v" id="m-light">—</span></div>
+        <div class="row"><span class="k">FOCUS</span><span class="v" id="m-focus">SOL SYSTEM</span></div>
+        <div class="row"><span class="k">FRAME</span><span class="v" id="m-fps">—</span></div>
+      </div>
+    </section>
+
+    <section class="panel dim" id="panel-target">
+      <h2>TARGET <em id="t-class">—</em></h2>
+      <div class="target-name" id="t-name">NO SELECTION</div>
+      <div class="rows" id="target-rows">
+        <div class="row"><span class="k"></span><span class="v"></span></div>
+        <div class="row"><span class="k"></span><span class="v"></span></div>
+        <div class="row"><span class="k"></span><span class="v"></span></div>
+        <div class="row"><span class="k"></span><span class="v"></span></div>
+        <div class="row"><span class="k"></span><span class="v"></span></div>
+        <div class="row"><span class="k"></span><span class="v"></span></div>
+        <div class="row"><span class="k"></span><span class="v"></span></div>
+        <div class="row"><span class="k"></span><span class="v"></span></div>
+        <div class="row"><span class="k"></span><span class="v"></span></div>
+        <div class="row"><span class="k"></span><span class="v"></span></div>
+        <div class="row"><span class="k"></span><span class="v"></span></div>
+        <div class="row"><span class="k"></span><span class="v"></span></div>
+      </div>
+      <p class="target-note" id="t-note"></p>
+    </section>
+
+  </aside>
+
+  <!-- ══ TOP RIGHT — NAVIGATION ══ -->
+  <nav id="hud-right">
+    <div class="nav-title">CATALOGUE</div>
+    <a class="navbox" data-route="space">
+      <span class="nb-idx">01</span>
+      <span class="nb-label">Space</span>
+      <span class="nb-state">READY</span>
+    </a>
+    <a class="navbox current" data-route="solar">
+      <span class="nb-idx">02</span>
+      <span class="nb-label">Solar System</span>
+      <span class="nb-state">LIVE</span>
+    </a>
+    <a class="navbox" data-route="galaxies">
+      <span class="nb-idx">03</span>
+      <span class="nb-label">The Galaxies</span>
+      <span class="nb-state">READY</span>
+    </a>
+    <a class="navbox" data-route="stars">
+      <span class="nb-idx">04</span>
+      <span class="nb-label">The Stars</span>
+      <span class="nb-state">READY</span>
+    </a>
+    <a class="navsub" data-route="constellations">
+      <span class="nb-idx">↳</span>
+      <span class="nb-label">Constellations</span>
+      <span class="nb-state">SKY</span>
+    </a>
+  </nav>
+
+  <!-- ══ HOVER LABEL ══ -->
+  <div id="hover-tag"><span id="hover-tag-name"></span><em id="hover-tag-sub"></em></div>
+
+  <!-- ══ BOTTOM HINTS ══ -->
+  <footer id="hints">
+    <span><b>DRAG</b> orbit</span><span><b>WASD</b> pan</span><span><b>RIGHT-DRAG</b> pan</span><span><b>SCROLL</b> zoom</span><span><b>C</b> recentre</span><span><b>SPACE</b> pause</span><span><b>, .</b> rate</span><span><b>O</b> orbits</span><span><b>L</b> labels</span>
+  </footer>
+
+  <div id="status"><i></i><span>STANDBY</span></div>
+
+  <div id="boot"><div class="boot-inner"><div class="boot-bar"><i></i></div><span>INITIALISING EPHEMERIS…</span></div></div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

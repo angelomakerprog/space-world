@@ -1,0 +1,23 @@
+# Netlify picks these up automatically when the repo is linked, so there is
+# nothing to type into the dashboard.
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  # Vite 8 needs Node 20.19+ / 22.12+. Pinned to the current LTS rather than
+  # to whatever Netlify defaults to, so a build years from now still matches.
+  NODE_VERSION = "22"
+
+# The site is one page — routing is done with #hashes, so no SPA redirect
+# rule is needed. Long-cache the fingerprinted bundles; never cache the HTML
+# that points at them, or a redeploy would serve stale asset names.
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/index.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"

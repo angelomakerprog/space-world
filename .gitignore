@@ -1,0 +1,10 @@
+node_modules
+dist
+.vite
+
+# dev-only screenshot output from window.__space.shot()
+shots/
+
+# local copies of the built site
+Unzip/
+*.zip
