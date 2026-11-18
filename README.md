@@ -9,6 +9,7 @@ npm run dev
 ```
 
 Then open **http://localhost:5173**.
+Or online netlify : **https://explorespaceworld.netlify.app/?fbclid=PAT01DUAVqivFleHRuA2FlbQIxMABwZG9mAnNydGMGYXBwX2lkDzU2NzA2NzM0MzM1MjQyNwABp-d__IVyog3mFZk_VO_4b7TP43fjUfVWm08EmjiQmP8Dw0MaT3toLs4hY5LM_aem_iZoDzN2uq3R73J1XF2GZVQ**
 
 ---
 
